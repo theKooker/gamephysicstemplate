@@ -1,6 +1,8 @@
 #ifndef MASSSPRINGSYSTEMSIMULATOR_h
 #define MASSSPRINGSYSTEMSIMULATOR_h
 #include "Simulator.h"
+#include "Point.h"
+#include "Spring.h"
 
 // Do Not Change
 #define EULER 0
@@ -8,6 +10,7 @@
 #define MIDPOINT 2
 // Do Not Change
 
+#define BOUNDS 0.5f
 
 class MassSpringSystemSimulator:public Simulator{
 public:
@@ -22,6 +25,12 @@ public:
 	void notifyCaseChanged(int testCase);
 	void externalForcesCalculations(float timeElapsed);
 	void simulateTimestep(float timeStep);
+	void simulateEuler(float timestep);
+	void computePointsAndSpringsForces();
+	void integrateEulerPosition(float timestep);
+	void integrateEulorVelocity(float timestep);
+	void simulateMidpoint(float timestep);
+	void checkBoundaries();
 	void onClick(int x, int y);
 	void onMouse(int x, int y);
 
@@ -29,6 +38,7 @@ public:
 	void setMass(float mass);
 	void setStiffness(float stiffness);
 	void setDampingFactor(float damping);
+	void setGravity(Vec3 gravity);
 	int addMassPoint(Vec3 position, Vec3 Velocity, bool isFixed);
 	void addSpring(int masspoint1, int masspoint2, float initialLength);
 	int getNumberOfMassPoints();
@@ -48,11 +58,21 @@ private:
 	float m_fStiffness;
 	float m_fDamping;
 	int m_iIntegrator;
+	Vec3 gravity;
 
 	// UI Attributes
 	Vec3 m_externalForce;
 	Point2D m_mouse;
 	Point2D m_trackmouse;
 	Point2D m_oldtrackmouse;
+	Demo1* demo1;
+
+public:
+	//All points
+	std::vector<Point> points;
+	//All springs
+	std::vector<Spring> springs;
+
+
 };
 #endif
