@@ -1,10 +1,14 @@
 #include "MassSpringSystemSimulator.h"
-#include "Demo1.cpp"
+#include "Demo1.h"
 
 
 MassSpringSystemSimulator::MassSpringSystemSimulator():gravity(0,0,0)
 {
-	demo1 = std::make_unique<Demo1>(*this).get();
+	scenes.push_back(std::make_unique<Demo1>(*this));
+	scenes.push_back(std::make_unique<Demo1>(*this));
+	scenes.push_back(std::make_unique<Demo1>(*this));
+	scenes.push_back(std::make_unique<Demo1>(*this));
+	currentDemo = scenes.at(0).get();
 }
 
 const char* MassSpringSystemSimulator::getTestCasesStr()
@@ -78,7 +82,6 @@ void MassSpringSystemSimulator::applyExternalForce(Vec3 force)
 {
 	for (Point& p: points)
 	{
-		std::cout << force << std::endl;
 		p.force += force;
 	}
 }
@@ -89,7 +92,12 @@ void MassSpringSystemSimulator::applyExternalForce(Vec3 force)
 
 void MassSpringSystemSimulator::reset()
 {
-	//demo->setup();
+	points.clear();
+	springs.clear();
+	if (currentDemo) {
+		currentDemo->setup();
+	}
+
 }
 
 void MassSpringSystemSimulator::drawFrame(ID3D11DeviceContext* pd3dImmediateContext)
@@ -125,7 +133,7 @@ void MassSpringSystemSimulator::externalForcesCalculations(float timeElapsed)
 		Vec3 inputView = Vec3((float)mouseDiff.x, (float)-mouseDiff.y, 0);
 		Vec3 inputWorld = worldViewInv.transformVectorNormal(inputView);
 		// find a proper scale!
-		float inputScale = 1.0f;
+		float inputScale = 0.1f;
 		inputWorld = inputWorld * inputScale;
 		m_externalForce = inputWorld;
 	}
@@ -191,20 +199,25 @@ void MassSpringSystemSimulator::simulateMidpoint(float timestep)
 
 void MassSpringSystemSimulator::checkBoundaries()
 {
+	bool bounded = false;
 	for (Point& p : points) {
 		if (std::abs(p.position.x) > BOUNDS) {
+			bounded = true;
 			p.velocity.x = 0;
 			p.position.x = p.position.x < -BOUNDS ? -BOUNDS : BOUNDS;
 		}
 		if (std::abs(p.position.y) > BOUNDS) {
+			bounded = true;
 			p.velocity.y = 0;
 			p.position.y = p.position.y < -BOUNDS ? -BOUNDS : BOUNDS;
 		}
 		if (std::abs(p.position.z) > BOUNDS) {
+			bounded = true;
 			p.velocity.z = 0;
 			p.position.z = p.position.z < -BOUNDS ? -BOUNDS : BOUNDS;
 		}
 	}
+	std::cout << bounded << std::endl;
 }
 
 void MassSpringSystemSimulator::onClick(int x, int y)

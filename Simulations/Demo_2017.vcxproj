@@ -225,9 +225,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Demo1.cpp" />
-    <ClCompile Include="Demo2.cpp" />
-    <ClCompile Include="Demo3.cpp" />
-    <ClCompile Include="Demo4.cpp" />
     <ClCompile Include="MassSpringSystemSimulator.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Spring.cpp" />
@@ -236,7 +233,9 @@
     <ClCompile Include="util\util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Demo.cpp" />
     <ClInclude Include="Demo.h" />
+    <ClInclude Include="Demo1.h" />
     <ClInclude Include="DrawingUtilitiesClass.h" />
     <ClInclude Include="MassSpringSystemSimulator.h" />
     <ClInclude Include="Point.h" />

@@ -3,7 +3,7 @@
 #include "Simulator.h"
 #include "Point.h"
 #include "Spring.h"
-
+#include "Demo.h"
 // Do Not Change
 #define EULER 0
 #define LEAPFROG 1
@@ -65,8 +65,8 @@ private:
 	Point2D m_mouse;
 	Point2D m_trackmouse;
 	Point2D m_oldtrackmouse;
-	Demo1* demo1;
-
+	Demo* currentDemo;
+	std::vector<std::unique_ptr<Demo>> scenes;
 public:
 	//All points
 	std::vector<Point> points;
