@@ -10,7 +10,7 @@
 #define MIDPOINT 2
 // Do Not Change
 
-#define BOUNDS 0.5f
+#define BOUNDS .5f
 
 class MassSpringSystemSimulator:public Simulator{
 public:

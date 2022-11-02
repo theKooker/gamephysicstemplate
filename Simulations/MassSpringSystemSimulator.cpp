@@ -22,6 +22,7 @@ void MassSpringSystemSimulator::initUI(DrawingUtilitiesClass* DUC)
 	this->DUC = DUC;
 	TwType TW_TYPE_INTEGRATOR = TwDefineEnumFromString("Integrator", "Euler, Leapfrog, Midpoint");
 	TwAddVarRW(DUC->g_pTweakBar, "Integrator", TW_TYPE_INTEGRATOR, &m_iIntegrator, "");
+	TwAddVarRW(DUC->g_pTweakBar, "Stiffness", TW_TYPE_FLOAT, &m_fStiffness, "step=1 min=0");
 	reset();
 	
 }
@@ -133,7 +134,7 @@ void MassSpringSystemSimulator::externalForcesCalculations(float timeElapsed)
 		Vec3 inputView = Vec3((float)mouseDiff.x, (float)-mouseDiff.y, 0);
 		Vec3 inputWorld = worldViewInv.transformVectorNormal(inputView);
 		// find a proper scale!
-		float inputScale = 0.1f;
+		float inputScale = 0.5f;
 		inputWorld = inputWorld * inputScale;
 		m_externalForce = inputWorld;
 	}
@@ -168,8 +169,8 @@ void MassSpringSystemSimulator::computePointsAndSpringsForces()
 		Point& p2 = points.at(s.point2);
 		float l = norm(p1.position - p2.position);
 		Vec3 force = -s.stiffness * (l - s.initialLength) * (p1.position - p2.position) / l;
-		p1.force += force;
-		p2.force += -force;
+		p1.force += force * 0.01f;
+		p2.force += -force * 0.01f;
 	}
 }
 
@@ -202,22 +203,18 @@ void MassSpringSystemSimulator::checkBoundaries()
 	bool bounded = false;
 	for (Point& p : points) {
 		if (std::abs(p.position.x) > BOUNDS) {
-			bounded = true;
-			p.velocity.x = 0;
+			p.velocity.x = -p.velocity.x;
 			p.position.x = p.position.x < -BOUNDS ? -BOUNDS : BOUNDS;
 		}
 		if (std::abs(p.position.y) > BOUNDS) {
-			bounded = true;
-			p.velocity.y = 0;
+			p.velocity.y = -p.velocity.y;
 			p.position.y = p.position.y < -BOUNDS ? -BOUNDS : BOUNDS;
 		}
 		if (std::abs(p.position.z) > BOUNDS) {
-			bounded = true;
-			p.velocity.z = 0;
+			p.velocity.z = -p.velocity.z;
 			p.position.z = p.position.z < -BOUNDS ? -BOUNDS : BOUNDS;
 		}
 	}
-	std::cout << bounded << std::endl;
 }
 
 void MassSpringSystemSimulator::onClick(int x, int y)
