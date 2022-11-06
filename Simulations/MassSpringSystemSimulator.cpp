@@ -30,6 +30,7 @@ void MassSpringSystemSimulator::initUI(DrawingUtilitiesClass* DUC)
 }
 void MassSpringSystemSimulator::demo1() {
 	reset();
+	setGravity(Vec3(0, 0, 0));
 	TwRemoveVar(DUC->g_pTweakBar, "Timestep");
 	std::cout << ">>>>>>>>>>>>>>>>DEMO1<<<<<<<<<<<<<<<<<" << std::endl;
 	std::cout << "EULER STEP" << std::endl;
@@ -54,6 +55,8 @@ void MassSpringSystemSimulator::demo1() {
 }
 void MassSpringSystemSimulator::demo2() {
 	reset();
+	setGravity(Vec3(0, 0, 0));
+
 	TwRemoveVar(DUC->g_pTweakBar, "Timestep");
 	std::cout << ">>>>>>>>>>>>>>>>DEMO2<<<<<<<<<<<<<<<<<" << std::endl;
 	std::cout << "(!) We use the Euler Integration" << std::endl;
@@ -67,6 +70,7 @@ void MassSpringSystemSimulator::demo2() {
 }
 void MassSpringSystemSimulator::demo3() {
 	reset();
+	setGravity(Vec3(0, 0, 0));
 	TwRemoveVar(DUC->g_pTweakBar, "Timestep");
 	std::cout << ">>>>>>>>>>>>>>>>DEMO3<<<<<<<<<<<<<<<<<" << std::endl;
 	std::cout << "(!) We use the Midpoint Integration" << std::endl;
