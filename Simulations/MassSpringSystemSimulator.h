@@ -3,14 +3,13 @@
 #include "Simulator.h"
 #include "Point.h"
 #include "Spring.h"
-#include "Demo.h"
 // Do Not Change
 #define EULER 0
 #define LEAPFROG 1
 #define MIDPOINT 2
 // Do Not Change
 
-#define BOUNDS .5f
+#define BOUNDS 5
 
 class MassSpringSystemSimulator:public Simulator{
 public:
@@ -27,9 +26,11 @@ public:
 	void simulateTimestep(float timeStep);
 	void simulateEuler(float timestep);
 	void computePointsAndSpringsForces();
+	void computeTempPointsAndSpringsForces();
 	void integrateEulerPosition(float timestep);
 	void integrateEulorVelocity(float timestep);
 	void simulateMidpoint(float timestep);
+	void printPointsInfo();
 	void checkBoundaries();
 	void onClick(int x, int y);
 	void onMouse(int x, int y);
@@ -46,7 +47,11 @@ public:
 	Vec3 getPositionOfMassPoint(int index);
 	Vec3 getVelocityOfMassPoint(int index);
 	void applyExternalForce(Vec3 force);
-	
+	//DEMOS
+	void demo1();
+	void demo2();
+	void demo3();
+	void demo4();
 	// Do Not Change
 	void setIntegrator(int integrator) {
 		m_iIntegrator = integrator;
@@ -59,14 +64,13 @@ private:
 	float m_fDamping;
 	int m_iIntegrator;
 	Vec3 gravity;
+	float gravityScale;
 
 	// UI Attributes
 	Vec3 m_externalForce;
 	Point2D m_mouse;
 	Point2D m_trackmouse;
 	Point2D m_oldtrackmouse;
-	Demo* currentDemo;
-	std::vector<std::unique_ptr<Demo>> scenes;
 public:
 	//All points
 	std::vector<Point> points;
